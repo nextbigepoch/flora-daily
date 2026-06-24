@@ -116,15 +116,23 @@ FEISHU_WEBHOOK_URL
 FEISHU_WEBHOOK_SECRET
 ```
 
-如果有公开可访问的网页版、PDF 或截图地址，也可以添加这些可选 secret：
+工作流会先把杂志版网页发布到 GitHub Pages，并生成：
 
 ```text
-FLORA_DAILY_PAGE_URL
-FLORA_DAILY_PDF_URL
-FLORA_DAILY_IMAGE_URL
+index.html
+flora-daily.pdf
+flora-daily.png
 ```
 
-第一次配置完后，可以进入 `Actions` → `Flora Daily Feishu Push` → `Run workflow` 手动测试一次。
+然后飞书卡片底部会自动带上：
+
+```text
+打开网页版
+查看PDF
+查看截图
+```
+
+第一次配置完后，需要在仓库 `Settings` → `Pages` 中确认 Source 使用 `GitHub Actions`。然后进入 `Actions` → `Flora Daily Feishu Push` → `Run workflow` 手动测试一次。
 
 ## 在 Codex 中继续开发
 

@@ -6,24 +6,66 @@ on:
     - cron: "30 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
   group: flora-daily-feishu
   cancel-in-progress: false
 
 jobs:
-  push:
+  publish-and-push:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Build publish directory
+        run: |
+          mkdir -p public
+          cp -R index.html styles.css brief-loader.js assets content public/
+
+      - name: Render PDF and screenshot
+        run: |
+          python3 -m http.server 4173 --directory public &
+          SERVER_PID=$!
+          trap "kill $SERVER_PID" EXIT
+          sleep 2
+          chrome --headless=new --disable-gpu --no-sandbox --window-size=1280,1800 \
+            --print-to-pdf=public/flora-daily.pdf \
+            http://127.0.0.1:4173/
+          chrome --headless=new --disable-gpu --no-sandbox --window-size=1280,1800 \
+            --screenshot=public/flora-daily.png \
+            http://127.0.0.1:4173/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
       - name: Send Flora Daily to Feishu
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
-          FLORA_DAILY_PAGE_URL: ${{ secrets.FLORA_DAILY_PAGE_URL }}
-          FLORA_DAILY_PDF_URL: ${{ secrets.FLORA_DAILY_PDF_URL }}
-          FLORA_DAILY_IMAGE_URL: ${{ secrets.FLORA_DAILY_IMAGE_URL }}
+          FLORA_DAILY_PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          FLORA_DAILY_PDF_URL: ${{ steps.deployment.outputs.page_url }}flora-daily.pdf
+          FLORA_DAILY_IMAGE_URL: ${{ steps.deployment.outputs.page_url }}flora-daily.png
         run: python3 scripts/send_feishu.py
