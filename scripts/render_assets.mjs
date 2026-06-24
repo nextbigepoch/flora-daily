@@ -60,6 +60,7 @@ try {
   const page = await browser.newPage({ viewport: { width: 1280, height: 1800 }, deviceScaleFactor: 1 });
 
   await page.goto("http://127.0.0.1:4173/", { waitUntil: "networkidle" });
+  await page.evaluate(() => document.body.classList.add("render-assets"));
   await page.evaluate(() => document.fonts.ready);
   await page.waitForFunction(() => {
     const lead = document.querySelector('[data-field="lead"]')?.textContent || "";
