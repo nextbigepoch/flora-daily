@@ -10,6 +10,7 @@
     "push:feishu:dry-run": "python3 scripts/send_feishu.py --dry-run"
   },
   "devDependencies": {
+    "playwright-core": "latest",
     "vite": "latest"
   }
 }

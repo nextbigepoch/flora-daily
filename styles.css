@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Flora CJK";
+  src: url("./assets/fonts/NotoSerifCJKsc-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
   --page-width: 210mm;
   --page-height: 297mm;
@@ -20,7 +28,7 @@ body {
   padding: 24px;
   background: #e9ebe6;
   color: var(--ink);
-  font-family: "Noto Serif SC", "Noto Serif CJK SC", "Noto Sans CJK SC", "Songti SC", "SimSun", Georgia, serif;
+  font-family: "Flora CJK", "Noto Serif SC", "Noto Serif CJK SC", "Noto Sans CJK SC", "Songti SC", "SimSun", Georgia, serif;
 }
 
 .template-toolbar {
@@ -29,7 +37,7 @@ body {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  font-family: "Flora CJK", system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
 }
 
 .template-toolbar select,
