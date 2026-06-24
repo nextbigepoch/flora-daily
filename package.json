@@ -1,0 +1,15 @@
+{
+  "name": "flora-daily-briefing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Flora Daily magazine-style Chinese briefing template for AI, cross-border ecommerce, and Amazon trends.",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "preview": "vite preview --host 0.0.0.0",
+    "push:feishu": "python3 scripts/send_feishu.py",
+    "push:feishu:dry-run": "python3 scripts/send_feishu.py --dry-run"
+  },
+  "devDependencies": {
+    "vite": "latest"
+  }
+}

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flora Daily｜AI × 跨境电商 × 老板决策简报</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="./brief-loader.js" defer></script>
+</head>
+<body>
+  <nav class="template-toolbar no-print" aria-label="简报操作">
+    <select id="source-picker" aria-label="选择内容源">
+      <option value="./content/daily-brief-template.md">Markdown</option>
+      <option value="./content/daily-brief.json">JSON</option>
+    </select>
+    <button type="button" id="reload-brief">刷新</button>
+    <button type="button" id="print-brief">打印/PDF</button>
+  </nav>
+
+  <main class="page" id="brief-page" data-default-source="./content/daily-brief-template.md">
+    <header class="masthead">
+      <h1 data-field="brand">Flora Daily</h1>
+      <div class="leaf-rule"><span>◆</span></div>
+      <div class="meta-row">
+        <span data-field="date">2026年6月24日　星期三</span>
+        <span data-field="theme">AI × 跨境电商 × 老板决策简报</span>
+        <span data-field="tagline">每天5分钟 · 决策更从容</span>
+      </div>
+    </header>
+
+    <section class="lead-quote">
+      <div class="quote-mark">“</div>
+      <div class="lead-badge">今日<br />一句话</div>
+      <p data-field="lead">
+        美国和欧洲同时开始收紧跨境小包政策，而 Amazon 正在加速 AI 购物入口建设。未来两年的核心竞争力，可能不再只是流量获取，而是：产品力 + 合规能力 + AI运营能力。
+      </p>
+      <div class="quote-mark right">”</div>
+    </section>
+
+    <section class="main-grid">
+      <article class="cover-story cardless">
+        <div class="ribbon">封面故事</div>
+        <h2 data-field="cover.title">Amazon正在重构流量分配规则</h2>
+        <p class="cover-summary" data-field="cover.summary">从关键词搜索到 AI 购物助手，商品被理解、被推荐、被比较的逻辑正在变化。</p>
+
+        <div class="flow-compare" aria-label="流量路径变化">
+          <div class="flow-card">
+            <h3>过去</h3>
+            <div class="flow-icons" aria-hidden="true">
+              <span>👤</span><b>→</b><span>🔍</span><b>→</b><span>🛍️</span>
+            </div>
+            <p data-field="cover.flowPast">消费者 → 搜索关键词 → 商品</p>
+          </div>
+          <div class="flow-arrow">›</div>
+          <div class="flow-card future">
+            <h3>未来</h3>
+            <div class="flow-icons" aria-hidden="true">
+              <span>👤</span><b>→</b><span>🤖</span><b>→</b><span>🛍️</span>
+            </div>
+            <p data-field="cover.flowFuture">消费者 → AI购物助手 → 商品</p>
+          </div>
+        </div>
+
+        <div class="analysis-row">
+          <div>
+            <h3>这意味着：</h3>
+            <ul data-list="cover.signals">
+              <li>SEO权重下降</li>
+              <li>商品语义表达能力上升</li>
+              <li>品牌认知权重提升</li>
+            </ul>
+          </div>
+          <aside class="thought-box">
+            <span class="icon-dot">💡</span>
+            <p><strong>老板思考：</strong><span data-field="cover.bossQuestion">未来是否应该增加产品教育内容、视频内容、品牌资产建设，而不是只关注关键词排名？</span></p>
+          </aside>
+        </div>
+      </article>
+
+      <aside class="side-card flora-observe">
+        <div class="side-title"><span>🔭</span><h2>Flora观察</h2></div>
+        <p class="question">今天最值得思考的问题：</p>
+        <p data-field="observation.question">如果 Amazon 搜索有一天 80% 由 AI 完成，你们公司还有哪些能力是竞争对手复制不了的？</p>
+        <div class="checkbox-grid" data-list="observation.abilities">
+          <span>□ 产品开发</span><span>□ 供应链</span>
+          <span>□ 品牌</span><span>□ 内容</span>
+          <span>□ 数据</span><span>□ AI能力</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="lower-grid">
+      <article class="trend-panel">
+        <div class="section-title"><span>📊</span><h2>本周重点趋势</h2></div>
+        <div class="trend-columns" data-list="trends">
+          <div class="trend-item">
+            <div class="badge">A</div>
+            <h3>AI Agent开始进入亚马逊运营</h3>
+            <p>越来越多工具开始支持自动选词、自动广告优化、自动差评分析、自动补货预测。未来6个月，运营岗位可能会从执行者，转向监督AI的人。</p>
+            <p class="advice"><span>建议：</span>找一个小团队先试验，不要等行业成熟。</p>
+          </div>
+          <div class="trend-item">
+            <div class="badge">B</div>
+            <h3>美国关税政策继续收紧</h3>
+            <p>双清包税模式风险继续上升。未来清关能力、HTS编码、Bond合规、产品认证，都会成为利润和门槛的一部分。</p>
+            <p class="advice"><span>建议：</span>把清关模式和税务测算纳入供应链核心能力。</p>
+          </div>
+        </div>
+      </article>
+
+      <aside class="side-card radar">
+        <div class="side-title"><span>🎯</span><h2>机会雷达</h2></div>
+        <div data-list="radar">
+          <div class="radar-item green"><b>高关注｜AI运营Agent</b><p>已经开始影响运营效率。</p></div>
+          <div class="radar-item yellow"><b>观察｜英国低价包裹政策调整</b><p>欧洲可能进一步跟进。</p></div>
+          <div class="radar-item red"><b>风险｜依赖低毛利小包产品</b><p>关税和物流成本持续上升。</p></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="action-box">
+      <div class="action-icon">☑</div>
+      <h2>今日<br />行动</h2>
+      <div class="action-copy">
+        <h3 data-field="action.title">只做一件事：拉出公司前100个SKU利润表。</h3>
+        <div data-list="action.details">
+          <p>重新计算：广告费、FBA费、关税、退货率。</p>
+          <p>看看哪些产品实际上已经不赚钱。</p>
+        </div>
+      </div>
+      <div class="ghost-chart">↗</div>
+    </section>
+
+    <footer>
+      <span data-field="footer">信息创造价值 · 决策决定未来</span>
+    </footer>
+  </main>
+</body>
+</html>
