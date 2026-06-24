@@ -63,5 +63,28 @@
       "看看哪些产品实际上已经不赚钱。"
     ]
   },
+  "sources": [
+    {
+      "title": "Announcements",
+      "publisher": "Sell on Amazon",
+      "url": "https://sell.amazon.com/blog/announcements",
+      "publishedAt": "示例来源",
+      "usedFor": "Amazon 平台变化"
+    },
+    {
+      "title": "OpenAI News",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/news/",
+      "publishedAt": "示例来源",
+      "usedFor": "AI 趋势"
+    },
+    {
+      "title": "Federal Register",
+      "publisher": "Federal Register",
+      "url": "https://www.federalregister.gov/",
+      "publishedAt": "示例来源",
+      "usedFor": "合规风险"
+    }
+  ],
   "footer": "信息创造价值 · 决策决定未来"
 }

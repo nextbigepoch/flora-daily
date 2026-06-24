@@ -42,6 +42,15 @@
       title: "只做一件事：拉出公司前100个SKU利润表。",
       details: ["重新计算：广告费、FBA费、关税、退货率。", "看看哪些产品实际上已经不赚钱。"]
     },
+    sources: [
+      {
+        title: "Announcements",
+        publisher: "Sell on Amazon",
+        url: "https://sell.amazon.com/blog/announcements",
+        publishedAt: "",
+        usedFor: "示例来源"
+      }
+    ],
     footer: "信息创造价值 · 决策决定未来"
   };
 
@@ -92,7 +101,8 @@
       trends: source.trends?.length ? source.trends : DEFAULT_BRIEF.trends,
       observation: { ...DEFAULT_BRIEF.observation, ...(source.observation || {}) },
       radar: source.radar?.length ? source.radar : DEFAULT_BRIEF.radar,
-      action: { ...DEFAULT_BRIEF.action, ...(source.action || {}) }
+      action: { ...DEFAULT_BRIEF.action, ...(source.action || {}) },
+      sources: source.sources?.length ? source.sources : DEFAULT_BRIEF.sources
     };
   }
 
@@ -128,7 +138,8 @@
         abilities: splitAbilities(valueAfter(observationLines, "可选能力"))
       },
       radar: parseRadar(radarLines),
-      action: parseAction(actionLines)
+      action: parseAction(actionLines),
+      sources: []
     };
   }
 
@@ -244,6 +255,7 @@
     renderList("trends", brief.trends, renderTrend);
     renderList("radar", brief.radar, renderRadar);
     renderList("action.details", brief.action.details, (item) => el("p", item));
+    renderList("sources", brief.sources, renderSource);
   }
 
   function renderTrend(item) {
@@ -265,6 +277,16 @@
     wrapper.append(el("b", `${item.level}｜${item.title}`));
     wrapper.append(el("p", item.summary));
     return wrapper;
+  }
+
+  function renderSource(item) {
+    const link = document.createElement("a");
+    link.href = item.url;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    link.textContent = item.publisher || item.title || item.url;
+    if (item.title) link.title = `${item.title}${item.publishedAt ? `｜${item.publishedAt}` : ""}`;
+    return link;
   }
 
   function renderList(name, items, createItem) {

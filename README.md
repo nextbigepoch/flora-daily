@@ -9,6 +9,8 @@ flora-daily-codex-project/
 ├── index.html                         # 主页面
 ├── styles.css                         # 杂志版式样式
 ├── brief-loader.js                    # Markdown/JSON 内容加载器
+├── scripts/generate_daily_brief.mjs    # OpenAI 每日简报生成脚本
+├── scripts/render_assets.mjs           # PDF/截图渲染脚本
 ├── scripts/send_feishu.py             # 飞书机器人推送脚本
 ├── .github/workflows/flora-daily-feishu.yml # GitHub Actions 每日推送
 ├── package.json                       # 可选：用 Vite 本地预览
@@ -112,9 +114,22 @@ export FLORA_DAILY_IMAGE_URL="https://example.com/flora-daily.png"
 在 GitHub 仓库里进入 `Settings` → `Secrets and variables` → `Actions`，添加：
 
 ```text
+OPENAI_API_KEY
 FEISHU_WEBHOOK_URL
 FEISHU_WEBHOOK_SECRET
 ```
+
+`OPENAI_API_KEY` 用来每天生成最新简报内容；飞书两个 secret 用来发送卡片。
+
+如需指定生成模型，可以在 `Settings` → `Secrets and variables` → `Actions` → `Variables` 添加：
+
+```text
+OPENAI_MODEL
+```
+
+不填时默认使用脚本内置模型。
+
+当前默认模型为 `gpt-5.4`；如果想降低成本，可以把变量设为账号可用的更小模型。
 
 工作流会先把杂志版网页发布到 GitHub Pages，并生成：
 

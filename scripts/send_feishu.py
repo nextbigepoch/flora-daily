@@ -182,6 +182,10 @@ def build_card_payload(brief: dict, links: dict[str, str]) -> dict:
         ),
     ]
 
+    source_content = source_block(brief.get("sources", []))
+    if source_content:
+        elements.extend([{"tag": "hr"}, md_block(source_content)])
+
     actions = link_buttons(links)
     if actions:
         elements.append({"tag": "action", "actions": actions})
@@ -286,6 +290,21 @@ def radar_block(radar: list[dict]) -> str:
     lines = ["**机会雷达**"]
     for item in radar:
         lines.append(f"- {item.get('level', '')}｜{item.get('title', '')}：{item.get('summary', '')}")
+    return "\\n".join(lines)
+
+
+def source_block(sources: list[dict]) -> str:
+    if not sources:
+        return ""
+    lines = ["**信息来源**"]
+    for item in sources[:5]:
+        publisher = item.get("publisher") or "Source"
+        title = item.get("title") or item.get("usedFor") or "原文"
+        url = item.get("url") or ""
+        if url:
+            lines.append(f"- [{publisher}｜{title}]({url})")
+        else:
+            lines.append(f"- {publisher}｜{title}")
     return "\\n".join(lines)
 
 

@@ -10,14 +10,14 @@
 <body>
   <nav class="template-toolbar no-print" aria-label="简报操作">
     <select id="source-picker" aria-label="选择内容源">
-      <option value="./content/daily-brief-template.md">Markdown</option>
       <option value="./content/daily-brief.json">JSON</option>
+      <option value="./content/daily-brief-template.md">Markdown</option>
     </select>
     <button type="button" id="reload-brief">刷新</button>
     <button type="button" id="print-brief">打印/PDF</button>
   </nav>
 
-  <main class="page" id="brief-page" data-default-source="./content/daily-brief-template.md">
+  <main class="page" id="brief-page" data-default-source="./content/daily-brief.json">
     <header class="masthead">
       <h1 data-field="brand">Flora Daily</h1>
       <div class="leaf-rule"><span>◆</span></div>
@@ -134,6 +134,14 @@
     <footer>
       <span data-field="footer">信息创造价值 · 决策决定未来</span>
     </footer>
+
+    <section class="source-strip">
+      <span>来源</span>
+      <div data-list="sources">
+        <a href="https://sell.amazon.com/blog/announcements">Amazon Announcements</a>
+        <a href="https://openai.com/news/">OpenAI News</a>
+      </div>
+    </section>
   </main>
 </body>
 </html>

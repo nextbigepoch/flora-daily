@@ -37,6 +37,12 @@ jobs:
       - name: Install render dependencies
         run: npm install --no-audit --no-fund
 
+      - name: Generate daily brief
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+        run: node scripts/generate_daily_brief.mjs
+
       - name: Build publish directory
         run: |
           mkdir -p public

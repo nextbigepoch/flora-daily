@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "preview": "vite preview --host 0.0.0.0",
+    "generate": "node scripts/generate_daily_brief.mjs",
     "push:feishu": "python3 scripts/send_feishu.py",
     "push:feishu:dry-run": "python3 scripts/send_feishu.py --dry-run"
   },

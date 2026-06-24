@@ -544,13 +544,41 @@ body.render-assets {
 }
 
 footer {
-  margin-top: 16px;
+  margin-top: 12px;
   border-top: 1.5px solid var(--green);
-  padding-top: 10px;
+  padding-top: 8px;
   text-align: center;
   color: var(--green);
   font-size: 15px;
   letter-spacing: 0;
+}
+
+.source-strip {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  color: #6d746c;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.source-strip span {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.source-strip div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 8px;
+}
+
+.source-strip a {
+  color: #6d746c;
+  text-decoration: none;
+  border-bottom: 1px dotted #aeb7ad;
 }
 
 @page { size: A4 portrait; margin: 0; }
