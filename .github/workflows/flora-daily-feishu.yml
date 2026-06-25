@@ -2,11 +2,12 @@ name: Flora Daily Feishu Push
 
 on:
   schedule:
-    # Temporary diagnostic run at 09:20 Asia/Shanghai = 01:20 UTC.
-    - cron: "20 1 * * *"
+    # Wake up every 5 minutes; the gate below sends once during 09:00-09:59 Asia/Shanghai.
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
@@ -34,45 +35,108 @@ jobs:
           echo "ref=${{ github.ref }}"
           date -u
 
+      - name: Gate daily send window
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            echo "Manual run: proceed."
+            exit 0
+          fi
+
+          SHANGHAI_HOUR="$(TZ=Asia/Shanghai date +%H)"
+          SHANGHAI_TIME="$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')"
+          echo "Asia/Shanghai time: $SHANGHAI_TIME"
+
+          if [ "$SHANGHAI_HOUR" != "09" ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+            echo "Outside 09:00-09:59 Asia/Shanghai window: skip."
+            exit 0
+          fi
+
+          curl -fsSL \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/flora-daily-feishu.yml/runs?event=schedule&status=success&per_page=30" \
+            -o /tmp/successful-runs.json
+
+          python3 - <<'PY'
+          import json
+          import os
+          from datetime import datetime, time, timezone
+          from zoneinfo import ZoneInfo
+
+          runs = json.load(open("/tmp/successful-runs.json")).get("workflow_runs", [])
+          shanghai = ZoneInfo("Asia/Shanghai")
+          now = datetime.now(shanghai)
+          window_start = datetime.combine(now.date(), time(9, 0), shanghai).astimezone(timezone.utc)
+          this_run = os.environ["GITHUB_RUN_ID"]
+
+          already_sent = False
+          for run in runs:
+              if str(run.get("id")) == this_run:
+                  continue
+              created_at = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+              if created_at >= window_start:
+                  already_sent = True
+                  print(f"Already sent in today's 09:00 window: run {run['id']} at {run['created_at']}.")
+                  break
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"should_run={'false' if already_sent else 'true'}\n")
+          print("Proceed." if not already_sent else "Skip duplicate.")
+          PY
+
       - name: Install CJK fonts
+        if: steps.gate.outputs.should_run == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y fonts-noto-cjk fonts-noto-color-emoji
           fc-cache -f -v
 
       - name: Install render dependencies
+        if: steps.gate.outputs.should_run == 'true'
         run: npm install --no-audit --no-fund
 
       - name: Generate daily brief
+        if: steps.gate.outputs.should_run == 'true'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
         run: node scripts/generate_daily_brief.mjs
 
       - name: Build publish directory
+        if: steps.gate.outputs.should_run == 'true'
         run: |
           mkdir -p public
           cp -R index.html styles.css brief-loader.js assets content public/
 
       - name: Render PDF and screenshot
+        if: steps.gate.outputs.should_run == 'true'
         run: |
           CHROME_BIN="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser)"
           "$CHROME_BIN" --version
           CHROME_BIN="$CHROME_BIN" node scripts/render_assets.mjs public
 
       - name: Setup Pages
+        if: steps.gate.outputs.should_run == 'true'
         uses: actions/configure-pages@v6
 
       - name: Upload Pages artifact
+        if: steps.gate.outputs.should_run == 'true'
         uses: actions/upload-pages-artifact@v5
         with:
           path: public
 
       - name: Deploy to GitHub Pages
+        if: steps.gate.outputs.should_run == 'true'
         id: deployment
         uses: actions/deploy-pages@v5
 
       - name: Send Flora Daily to Feishu
+        if: steps.gate.outputs.should_run == 'true'
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
           FEISHU_WEBHOOK_SECRET: ${{ secrets.FEISHU_WEBHOOK_SECRET }}
