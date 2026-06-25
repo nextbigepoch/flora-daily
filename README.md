@@ -103,14 +103,28 @@ export FLORA_DAILY_PDF_URL="https://example.com/flora-daily.pdf"
 export FLORA_DAILY_IMAGE_URL="https://example.com/flora-daily.png"
 ```
 
-## GitHub Actions 自动推送
+## GitHub Actions 推送
 
-仓库推到 GitHub 后，GitHub Actions 会在北京时间 09:00-09:59 窗口内自动推送一次飞书。为降低 GitHub schedule 丢掉单个时间点的风险，workflow 每 5 分钟轻量唤醒一次，但只有 09 点这一小时内、且当天尚未成功发送过时，才会真正生成内容并推送。
+GitHub 自带 `schedule` 事件在本仓库没有产生运行记录，因此自动发送改为外部定时器触发 GitHub 官方 `workflow_dispatch` API。外部定时器每天北京时间 09:00 发送一次 POST，相当于自动点击一次 `Run workflow`。
+
+HTTP 配置：
 
 ```text
-cron: "*/5 * * * *"
-gate: Asia/Shanghai 09:00-09:59, once per day
+method: POST
+url: https://api.github.com/repos/nextbigepoch/flora-daily/actions/workflows/flora-daily-feishu.yml/dispatches
+body: {"ref":"main"}
 ```
+
+Headers：
+
+```text
+Accept: application/vnd.github+json
+Authorization: Bearer <GITHUB_ACTIONS_TOKEN>
+X-GitHub-Api-Version: 2026-03-10
+Content-Type: application/json
+```
+
+`GITHUB_ACTIONS_TOKEN` 建议使用 GitHub fine-grained personal access token，只给 `nextbigepoch/flora-daily` 这个仓库，权限只开 `Actions: Read and write`。
 
 在 GitHub 仓库里进入 `Settings` → `Secrets and variables` → `Actions`，添加：
 
