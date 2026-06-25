@@ -105,10 +105,11 @@ export FLORA_DAILY_IMAGE_URL="https://example.com/flora-daily.png"
 
 ## GitHub Actions 自动推送
 
-仓库推到 GitHub 后，GitHub Actions 会按北京时间每天 08:30 推送飞书。对应 cron 使用 UTC 时间：
+仓库推到 GitHub 后，GitHub Actions 会按北京时间每天 08:37 推送飞书。这里使用 GitHub Actions 的 timezone 字段：
 
 ```text
-30 0 * * *
+cron: "37 8 * * *"
+timezone: "Asia/Shanghai"
 ```
 
 在 GitHub 仓库里进入 `Settings` → `Secrets and variables` → `Actions`，添加：

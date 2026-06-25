@@ -2,8 +2,9 @@ name: Flora Daily Feishu Push
 
 on:
   schedule:
-    # 08:30 Asia/Shanghai = 00:30 UTC.
-    - cron: "30 0 * * *"
+    # 08:37 Asia/Shanghai. GitHub scheduled runs can be delayed or dropped, so avoid crowded round minutes.
+    - cron: "37 8 * * *"
+      timezone: "Asia/Shanghai"
   workflow_dispatch:
 
 permissions:
@@ -27,6 +28,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      - name: Show trigger context
+        run: |
+          echo "event_name=${{ github.event_name }}"
+          echo "ref=${{ github.ref }}"
+          date -u
 
       - name: Install CJK fonts
         run: |
