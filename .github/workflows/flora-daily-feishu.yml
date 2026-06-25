@@ -2,9 +2,8 @@ name: Flora Daily Feishu Push
 
 on:
   schedule:
-    # Temporary diagnostic run at 09:10 Asia/Shanghai to verify schedule registration.
-    - cron: "10 9 * * *"
-      timezone: "Asia/Shanghai"
+    # Temporary diagnostic run at 09:20 Asia/Shanghai = 01:20 UTC.
+    - cron: "20 1 * * *"
   workflow_dispatch:
 
 permissions:
