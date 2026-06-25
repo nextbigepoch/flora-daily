@@ -2,8 +2,8 @@ name: Flora Daily Feishu Push
 
 on:
   schedule:
-    # 08:37 Asia/Shanghai. GitHub scheduled runs can be delayed or dropped, so avoid crowded round minutes.
-    - cron: "37 8 * * *"
+    # 09:00 Asia/Shanghai.
+    - cron: "0 9 * * *"
       timezone: "Asia/Shanghai"
   workflow_dispatch:
 
